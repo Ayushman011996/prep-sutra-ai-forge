@@ -3,12 +3,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "@/context/AuthContext";
+import AuthGuard from "@/components/auth/AuthGuard";
 import Index from "./pages/Index";
 import Planner from "./pages/Planner";
 import News from "./pages/News";
 import Questions from "./pages/Questions";
 import Essay from "./pages/Essay";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -16,19 +19,56 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/planner" element={<Planner />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/questions" element={<Questions />} />
-          <Route path="/essay" element={<Essay />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/auth" element={<Auth />} />
+            <Route 
+              path="/" 
+              element={
+                <AuthGuard>
+                  <Index />
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/planner" 
+              element={
+                <AuthGuard>
+                  <Planner />
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/news" 
+              element={
+                <AuthGuard>
+                  <News />
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/questions" 
+              element={
+                <AuthGuard>
+                  <Questions />
+                </AuthGuard>
+              } 
+            />
+            <Route 
+              path="/essay" 
+              element={
+                <AuthGuard>
+                  <Essay />
+                </AuthGuard>
+              } 
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
