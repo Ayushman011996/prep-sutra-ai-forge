@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Search } from "lucide-react";
+import UserMenu from "@/components/layout/UserMenu";
 
 const Header = () => {
   return (
@@ -35,8 +36,7 @@ const Header = () => {
           <Button variant="ghost" size="icon">
             <Search className="h-[1.2rem] w-[1.2rem]" />
           </Button>
-          <Button className="hidden md:flex">Log in</Button>
-          <Button variant="secondary" className="hidden md:flex">Sign up</Button>
+          <UserMenu />
         </div>
       </div>
     </header>
